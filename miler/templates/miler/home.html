@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="jumbotron text-center">
+    <h1 class="display-4">Добро пожаловать в SkyChimp</h1>
+    <p class="lead">Ваш сервис для управления рассылками и письмами.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">Общее количество рассылок</h5>
+                <p class="card-text">{{ total_mailings }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">Список рассылок</h6>
+                <ul>
+                    {% for mailing in total_mailings_list %}
+                        <li>{{ mailing.title }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'mailing_list' %}">Показать все рассылки</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">Активные рассылки</h5>
+                <p class="card-text">{{ active_mailings }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">Список активных рассылок</h6>
+                <ul>
+                    {% for mailing in active_mailings_list %}
+                        <li>{{ mailing.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Список клиентов и количество рассылок</h5>
+                <ul>
+                    {% if show_full_clients_list %}
+                        {% for item in clients_with_mailings %}
+                            <li>
+                                {{ item.client.full_name }} - {{ item.client.email }} ({{ item.mailing_count }} рассылок)
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for item in latest_clients %}
+                            <li>
+                                {{ item.full_name }} - {{ item.email }}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <a href="{% url 'client_list' %}">Показать всеx клиентов</a>
+            </div>
+        </div>
+    </div>
+<div class="row text-center">
+    <div class="col-md-12">
+        <h2 class="mb-3">Случайные записи блога</h2>
+        <div class="card-deck">
+            {% for article in random_articles %}
+            <div class="card mb-4">
+                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content|truncatewords:30 }}</p>
+                    <a href="#" class="btn btn-primary">Читать далее</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

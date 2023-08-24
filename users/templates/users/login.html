@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Форма - {{ block.super }}{% endblock title %}
+
+{% block header %}
+    Вход
+{% endblock header %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mt-5">
+                    <div class="card-header">{{ block.super }}</div>
+                    <div class="card-body">
+                        <h2 class="card-title">Вход</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+
+                            <div class="form-group mt-3">
+                                <button type="submit" class="btn btn-primary">Войти</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

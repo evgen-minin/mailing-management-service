@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Список клиентов{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Список клиентов</h2>
+        <ul class="list-group">
+            {% for client in clients %}
+                <li class="list-group-item">
+                    {{ client.full_name }} - {{ client.email }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
