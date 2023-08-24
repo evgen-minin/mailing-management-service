@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Форма - {{ block.super }}{% endblock title %}
+
+{% block header %}
+    
+{% endblock header %}
+    Профиль
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form method="post" name="profile-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="{% url 'users:generate_password' %}">
+                        <button type="button" class="btn btn-primary">Сгенерировать пароль</button>
+                    </a>
+                </form>
+                <div id="success-message" class="alert alert-success" style="display: none;">
+                    Сохранения успешно применены.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.forms['profile-form'];
+            const successMessage = document.getElementById('success-message');
+            
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                successMessage.style.display = 'block';
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                    
+                    window.location.href = "{% url 'home' %}";
+                }, 3000);  
+            });
+        });
+    </script>
+{% endblock content %}
