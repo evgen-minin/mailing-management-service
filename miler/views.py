@@ -24,8 +24,11 @@ def home_view(request):
     unique_clients = Client.objects.distinct().count()
 
     all_articles = BlogPost.objects.all()
-    random_articles = random.sample(list(all_articles), 3)
-
+    if len(all_articles) >=3:
+        random_articles = random.sample(list(all_articles), 3)
+    else:
+         random_articles = all_articles
+         
     return render(request, 'miler/home.html', {
         'total_mailings': total_mailings,
         'active_mailings': active_mailings,
