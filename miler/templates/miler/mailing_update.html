@@ -1,13 +1,12 @@
-{% extends 'base.html' %}
-
-{% block title %}Редактирование рассылки{% endblock %}
-
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-<h2>Редактирование рассылки</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ mailing_form.as_p }}
-    {{ message_form.as_p }}
-    <button type="submit">Сохранить изменения</button>
-</form>
+    <h2>Редактирование рассылки</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {{ message_form|crispy }}
+        <button type="submit">Сохранить изменения</button>
+        <a href="{% url 'mailing_list' %}">Отмена</a>
+    </form>
 {% endblock %}
