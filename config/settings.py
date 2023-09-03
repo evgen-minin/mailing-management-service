@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'miler.apps.MilerConfig',
+    'blog.apps.BlogConfig',
     'crispy_forms',
     'crispy_bootstrap4',
     'django_crontab'

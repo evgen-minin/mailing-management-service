@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 class Client(models.Model):
     email = models.EmailField(unique=True)
@@ -7,34 +9,41 @@ class Client(models.Model):
 
     def __str__(self):
         return self.full_name
-    
+
     class Meta:
-        verbose_name = 'Клиент'
-        verbose_name_plural = 'Клиенты'
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
 
 class Mailing(models.Model):
     STATUS_CHOICES = (
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
-        ('completed', 'Завершена'),
+        ("created", "Создана"),
+        ("started", "Запущена"),
+        ("completed", "Завершена"),
     )
 
     FREQUENCY_CHOICES = (
-        ('daily', 'Раз в день'),
-        ('weekly', 'Раз в неделю'),
-        ('monthly', 'Раз в месяц'),
+        ("daily", "Раз в день"),
+        ("weekly", "Раз в неделю"),
+        ("monthly", "Раз в месяц"),
     )
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='mailings')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="mailings"
+    )
+    client = models.ForeignKey(
+        Client, on_delete=models.CASCADE, related_name="mailings"
+    )
     send_time = models.TimeField()
     frequency = models.CharField(max_length=10, choices=FREQUENCY_CHOICES)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='created')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="created")
 
     def __str__(self):
         return f"Рассылка ID: {self.pk}"
-    
+
     class Meta:
-        verbose_name_plural = 'Почтовое отправление'
+        verbose_name_plural = "Почтовое отправление"
+
 
 class Message(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
@@ -43,14 +52,15 @@ class Message(models.Model):
 
     def __str__(self):
         return self.subject
-    
+
     class Meta:
-        verbose_name_plural = 'Сообщение'
+        verbose_name_plural = "Сообщение"
+
 
 class DeliveryAttempt(models.Model):
     STATUS_CHOICES = (
-        ('success', 'Успешно'),
-        ('failed', 'Неудачно'),
+        ("success", "Успешно"),
+        ("failed", "Неудачно"),
     )
 
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
@@ -60,17 +70,6 @@ class DeliveryAttempt(models.Model):
 
     def __str__(self):
         return f"{self.status} ({self.timestamp})"
-    
+
     class Meta:
-        verbose_name_plural = 'Попытка доставки'
-
-
-class BlogArticle(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    image = models.ImageField(upload_to='blog_images/')
-    views = models.PositiveIntegerField(default=0)
-    pub_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
+        verbose_name_plural = "Попытка доставки"

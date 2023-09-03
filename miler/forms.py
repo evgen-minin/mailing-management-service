@@ -1,10 +1,10 @@
 from django import forms
-from .models import Newsletter, Message
+from miler.models import Mailing, Message
 
-class NewsletterForm(forms.ModelForm):
+class MailingForm(forms.ModelForm):
     class Meta:
-        model = Newsletter
-        fields = ['send_time', 'frequency', 'status']
+        model = Mailing
+        fields = ['send_time', 'frequency', 'status', 'client']
 
 class MessageForm(forms.ModelForm):
     class Meta:
